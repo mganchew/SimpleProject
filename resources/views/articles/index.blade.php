@@ -12,6 +12,7 @@
             <div class="body">
                 {{$article->body}}
             </div>
+            <br><p><b>Published:</b>{{$article->published_at->diffForHumans()}}</p>
         </article>
 
     @endforeach
