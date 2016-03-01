@@ -75,7 +75,11 @@
 </nav>
 
 <div class="container">
+
+    @include('partials.flash')
+
     @yield('content')
+
 </div>
 
 <div class="container">
