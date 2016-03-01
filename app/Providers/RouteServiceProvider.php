@@ -27,6 +27,9 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot($router);
+        //We bind the model to the wildcard so we don`t need to pass the id and then check if the article is created
+        //It will do everything behind the scene
+        $router->model('articles','App\Article');
     }
 
     /**

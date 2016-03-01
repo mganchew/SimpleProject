@@ -3,12 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ArticlesController extends Controller
 {
+
+    public function __construct(){
+
+        $this->middleware('auth',['only'=>'create']);
+
+    }
+
     public function index(){
 
         $articles = Article::latest('published_at')->published()->get();
@@ -17,9 +26,8 @@ class ArticlesController extends Controller
 
     }
 
-    public function show($id){
+    public function show(Article $article){
 
-        $article = Article::findOrFail($id);
         return view('articles.show')->with('article',$article);
 
     }
@@ -32,26 +40,23 @@ class ArticlesController extends Controller
 
     public function store(Requests\ArticleRequest $request){
 
-        $input = $request->all();
-
-        Article::create($input);
+        //Auto filling user_id
+        $article = new Article($request->all());
+        Auth::user()->articles()->save($article);
 
         return redirect('articles');
 
     }
 
-    public function edit($id){
+    public function edit(Article $article){
 
-        $article = Article::findOrFail($id);
         return view('articles.edit')->with('article',$article);
 
     }
 
-    public function update($id,Requests\ArticleRequest $request){
+    public function update(Article $article,Requests\ArticleRequest $request){
 
         $input = $input = $request->all();
-
-        $article = Article::findOrFail($id);
         $article->update($input);
 
         return redirect('articles');
