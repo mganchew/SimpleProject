@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Http\Controllers\Auth\AuthController;
+use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -34,7 +35,8 @@ class ArticlesController extends Controller
 
     public function create(){
 
-        return view('articles.create');
+        $tags = Tag::lists('name','id');
+        return view('articles.create')->with('tags',$tags);
 
     }
 
@@ -43,6 +45,9 @@ class ArticlesController extends Controller
         //Auto filling user_id
         $article = new Article($request->all());
         Auth::user()->articles()->save($article);
+
+        $tagIds = $request->input('tag_list');
+        $article->tags()->attach($tagIds);
 
         //laravel 5.2 way to flash message
         $request->session()->flash('flash_message','Your article has been created!');
@@ -53,7 +58,11 @@ class ArticlesController extends Controller
 
     public function edit(Article $article){
 
-        return view('articles.edit')->with('article',$article);
+        $tags = Tag::lists('name','id');
+        return view('articles.edit')->with([
+            'article' => $article,
+            'tags' => $tags
+        ]);
 
     }
 

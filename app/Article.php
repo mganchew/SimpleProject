@@ -21,21 +21,38 @@ class Article extends Model
 
     protected $dates = ['published_at'];
 
-    public function scopePublished($query){
+    public function scopePublished($query)
+    {
 
-        $query->where('published_at','<=',Carbon::now());
-
-    }
-
-    public function setPublishedAtAttribute($date){
-
-        $this->attributes['published_at'] = Carbon::createFromFormat('m-d-Y',$date);
+        $query->where('published_at', '<=', Carbon::now());
 
     }
 
-    public function user(){
+    public function setPublishedAtAttribute($date)
+    {
+
+        $this->attributes['published_at'] = Carbon::createFromFormat('m-d-Y', $date);
+
+    }
+
+    public function user()
+    {
 
         return $this->belongsTo('App\User');
+
+    }
+
+    public function tags()
+    {
+
+        return $this->belongsToMany('App\Tag')->withTimestamps();
+
+    }
+
+    public function getTagListAttribute()
+    {
+
+        return $this->tags()->lists('id');
 
     }
 
