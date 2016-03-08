@@ -47,7 +47,7 @@ class ArticlesController extends Controller
         Auth::user()->articles()->save($article);
 
         $tagIds = $request->input('tag_list');
-        $article->tags()->attach($tagIds);
+        $article->tags()->sync($tagIds);
 
         //laravel 5.2 way to flash message
         $request->session()->flash('flash_message','Your article has been created!');
@@ -70,6 +70,9 @@ class ArticlesController extends Controller
 
         $input = $input = $request->all();
         $article->update($input);
+
+        $tagIds = $request->input('tag_list');
+        $article->tags()->sync($tagIds);
 
         return redirect('articles');
     }
