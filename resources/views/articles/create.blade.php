@@ -5,7 +5,7 @@
     <h1>Write a new article</h1>
     <hr/>
 
-    {!!Form::open(['method'=>'POST','url'=>"articles"])!!}
+    {!!Form::model($article,['method'=>'POST','url'=>"articles"])!!}
 
     @include('articles.form',['submitButtonText'=>'Add Article'])
 

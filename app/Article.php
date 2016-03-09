@@ -35,6 +35,11 @@ class Article extends Model
 
     }
 
+    public function getPublishedAtAttribute($date)
+    {
+        return new Carbon($date);
+    }
+
     public function user()
     {
 
